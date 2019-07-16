@@ -18,7 +18,7 @@ namespace AzureFunctionsDemo
         {
             logger.LogInformation("Received message with greeting: {0}", message.Name);
 
-            return context.Send(new OutgoingMessage() {Text = message.Name});
+            return context.Send(new ASBMessage() {Text = message.Name});
         }
     }
 }

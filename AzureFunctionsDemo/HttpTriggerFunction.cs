@@ -8,21 +8,23 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using NServiceBus;
 using NServiceBus.Extensibility;
 using NServiceBus.Transport;
 using ServerlessTransportSpike;
+using ExecutionContext = Microsoft.Azure.WebJobs.ExecutionContext;
 
 namespace AzureFunctionsDemo
 {
-    public static class Function1
+    public static class HttpTriggerFunction
     {
         [FunctionName("Function1")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
-            ILogger log)
+            ILogger log, ExecutionContext context)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
@@ -32,15 +34,21 @@ namespace AzureFunctionsDemo
             dynamic data = JsonConvert.DeserializeObject(requestBody);
             name = name ?? data?.name ?? "anonymous";
 
+            var config = new ConfigurationBuilder()
+                .SetBasePath(context.FunctionAppDirectory)
+                .AddJsonFile("local.settings.json", optional: false)
+                .Build();
 
-            var endpoint = new EndpointConfiguration("FunctionsDemo");
+
+            var endpoint = new EndpointConfiguration("FunctionsDemoHTTPTrigger");
             var serverless = endpoint.UseTransport<ServerlessTransport<AzureServiceBusTransport>>();
             var transport = serverless.BaseTransportConfiguration();
 
-            transport.ConnectionString(Environment.GetEnvironmentVariable("AzureServiceBusTransport.ConnectionString"));
+            var asbConnectionString = config.GetValue<string>("Values:ASB");
+            transport.ConnectionString(asbConnectionString);
 
 
-            transport.Routing().RouteToEndpoint(typeof(OutgoingMessage), "OutgoingQueue");
+            transport.Routing().RouteToEndpoint(typeof(ASBMessage), "ASBTriggerQueue");
 
             endpoint.UsePersistence<InMemoryPersistence>();
             //TODO: package conflicts with json serializer with functions

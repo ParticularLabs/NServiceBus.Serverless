@@ -2,7 +2,7 @@
 
 namespace AzureFunctionsDemo
 {
-    public class OutgoingMessage : IMessage
+    public class ASBMessage : IMessage
     {
         public string Text { get; set; }
     }
