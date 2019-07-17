@@ -4,10 +4,18 @@ using NServiceBus.Transport;
 
 namespace NServiceBus.Serverless
 {
+    /// <summary>
+    /// Provides access to the NServiceBus pipeline without a message pump
+    /// </summary>
     public class PipelineInvoker : IPushMessages
     {
         private Func<MessageContext, Task> onMessage;
 
+        /// <summary>
+        /// Push a message to the pipeline
+        /// </summary>
+        /// <param name="messageContext"></param>
+        /// <returns></returns>
         public Task PushMessage(MessageContext messageContext) => onMessage?.Invoke(messageContext);
 
         Task IPushMessages.Init(Func<MessageContext, Task> onMessage, Func<ErrorContext, Task<ErrorHandleResult>> onError, CriticalError criticalError, PushSettings settings)
