@@ -19,7 +19,7 @@ namespace NServiceBus.Serverless
                 this.onMessage = onMessage;
             }
 
-            return Task.CompletedTask;
+            return TaskEx.CompletedTask;
         }
 
         void IPushMessages.Start(PushRuntimeSettings limitations)
@@ -28,7 +28,7 @@ namespace NServiceBus.Serverless
 
         Task IPushMessages.Stop()
         {
-            return Task.CompletedTask;
+            return TaskEx.CompletedTask;
         }
     }
 }
