@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using NServiceBus;
 using NServiceBus.Routing;
 using NServiceBus.Settings;
 using NServiceBus.Transport;
 
-namespace ServerlessTransportSpike
+namespace NServiceBus.Serverless
 {
     public class ServerlessTransportInfrastructure<TBaseInfrastructure> : TransportInfrastructure
     {

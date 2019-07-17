@@ -1,7 +1,7 @@
 ﻿using NServiceBus.Settings;
 using NServiceBus.Transport;
 
-namespace ServerlessTransportSpike
+namespace NServiceBus.Serverless
 {
     public class ServerlessTransport<TBaseTransport> : TransportDefinition
         where TBaseTransport : TransportDefinition, new()

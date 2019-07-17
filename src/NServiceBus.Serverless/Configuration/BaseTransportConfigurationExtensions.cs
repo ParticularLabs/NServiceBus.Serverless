@@ -1,8 +1,8 @@
-﻿using NServiceBus;
-using NServiceBus.Configuration.AdvancedExtensibility;
+﻿using NServiceBus.Configuration.AdvancedExtensibility;
+using NServiceBus.Serverless;
 using NServiceBus.Transport;
 
-namespace ServerlessTransportSpike
+namespace NServiceBus
 {
     public static class BaseTransportConfigurationExtensions
     {

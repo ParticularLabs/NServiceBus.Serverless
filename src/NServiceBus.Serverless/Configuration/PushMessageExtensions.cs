@@ -1,10 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
-using NServiceBus;
-using NServiceBus.Configuration.AdvancedExtensibility;
-using NServiceBus.Transport;
+﻿using NServiceBus.Configuration.AdvancedExtensibility;
+using NServiceBus.Serverless;
 
-namespace ServerlessTransportSpike
+namespace NServiceBus
 {
     public static class PushMessageExtensions
     {
