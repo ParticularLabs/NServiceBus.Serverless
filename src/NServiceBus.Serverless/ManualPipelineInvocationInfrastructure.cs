@@ -3,7 +3,7 @@ using NServiceBus.Transport;
 
 namespace NServiceBus.Serverless
 {
-    public class ManualPipelineInvocationInfrastructure : TransportReceiveInfrastructure
+    class ManualPipelineInvocationInfrastructure : TransportReceiveInfrastructure
     {
         public ManualPipelineInvocationInfrastructure(PipelineInvoker pipelineInvoker) :
             base(() => pipelineInvoker,
