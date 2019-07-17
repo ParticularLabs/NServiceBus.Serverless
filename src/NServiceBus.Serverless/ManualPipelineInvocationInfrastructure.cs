@@ -7,7 +7,7 @@ namespace NServiceBus.Serverless
     {
         public ManualPipelineInvocationInfrastructure(PipelineInvoker pipelineInvoker) :
             base(() => pipelineInvoker,
-                () => new FakeQueueCreator(),
+                () => new NoOpQueueCreator(),
                 () => Task.FromResult(StartupCheckResult.Success))
         {
         }

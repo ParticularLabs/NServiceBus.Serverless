@@ -3,7 +3,7 @@ using NServiceBus.Transport;
 
 namespace NServiceBus.Serverless
 {
-    class FakeQueueCreator : ICreateQueues
+    class NoOpQueueCreator : ICreateQueues
     {
         public Task CreateQueueIfNecessary(QueueBindings queueBindings, string identity)
         {
