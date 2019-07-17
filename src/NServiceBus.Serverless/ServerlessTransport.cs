@@ -27,7 +27,6 @@ namespace NServiceBus.Serverless
         /// <returns></returns>
         public override TransportInfrastructure Initialize(SettingsHolder settings, string connectionString)
         {
-            TBaseTransport baseTransport = new TBaseTransport();
             var baseTransportInfrastructure = baseTransport.Initialize(settings, connectionString);
             return new ServerlessTransportInfrastructure<TBaseTransport>(baseTransportInfrastructure, settings);
         }
