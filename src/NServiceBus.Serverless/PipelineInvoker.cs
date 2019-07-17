@@ -9,7 +9,8 @@ namespace NServiceBus.Serverless
     /// </summary>
     public class PipelineInvoker : IPushMessages
     {
-        private Func<MessageContext, Task> onMessage;
+        Func<MessageContext, Task> onMessage;
+        Func<ErrorContext, Task<ErrorHandleResult>> onError;
 
         /// <summary>
         /// Push a message to the pipeline
@@ -18,6 +19,13 @@ namespace NServiceBus.Serverless
         /// <returns></returns>
         public Task PushMessage(MessageContext messageContext) => onMessage?.Invoke(messageContext);
 
+        /// <summary>
+        /// Push an errored message to recoverability
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public Task PushError(ErrorContext context) => onError?.Invoke(context);
+
         Task IPushMessages.Init(Func<MessageContext, Task> onMessage, Func<ErrorContext, Task<ErrorHandleResult>> onError, CriticalError criticalError, PushSettings settings)
         {
             if (this.onMessage == null)
@@ -25,6 +33,8 @@ namespace NServiceBus.Serverless
                 // The core ReceiveComponent calls TransportInfrastructure.MessagePumpFactory() multiple times
                 // the first invocation is for the main pipeline, ignore all other pipelines as we don't want to manually invoke them.
                 this.onMessage = onMessage;
+
+                this.onError = onError;
             }
 
             return TaskEx.CompletedTask;
