@@ -9,7 +9,10 @@ namespace AzureFunctionsDemo
         public Task Handle(ASBMessage message, IMessageHandlerContext context)
         {
             Console.WriteLine($"Hello {message.Text} from the ASB triggered function");
-            return Task.CompletedTask;
+            return context.Send(new ASQMessage
+            {
+                Content = message.Text
+            });
         }
     }
 }

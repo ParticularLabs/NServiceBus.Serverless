@@ -1,32 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.WindowsAzure.Storage.Queue;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using NServiceBus;
 using NServiceBus.Extensibility;
 using NServiceBus.Transport;
 using ServerlessTransportSpike;
 using ExecutionContext = Microsoft.Azure.WebJobs.ExecutionContext;
+using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 
 namespace AzureFunctionsDemo
 {
-    public class ASBTriggerFunction
+    public class ASQTriggerFunction
     {
-        [FunctionName(nameof(ASBTriggerFunction))]
-        public static async Task Run(
-            [ServiceBusTrigger(queueName: "ASBTriggerQueue", Connection = "ASB")]
-            //byte[] message,
-            Message message,
-            int deliveryCount,
-            DateTime enqueuedTimeUtc,
-            string messageId,
+        [FunctionName(nameof(ASQTriggerFunction))]
+        public static async Task QueueTrigger(
+            [QueueTrigger("ASQTriggerQueue", Connection = "ASQ")]
+            CloudQueueMessage myQueueItem,
             ILogger log,
             ExecutionContext context)
         {
@@ -35,16 +31,18 @@ namespace AzureFunctionsDemo
                 .AddJsonFile("local.settings.json", optional: false)
                 .Build();
 
-            log.LogInformation($"C# ServiceBus queue trigger function processed message: {messageId}");
+            log.LogInformation($"C# function processed: {myQueueItem}");
 
-            var endpoint = new EndpointConfiguration("FunctionsDemoASBTrigger");
+            JsonSerializer serializer = new JsonSerializer();
+            var msg = serializer.Deserialize<ASQMessageWrapper>(
+                new JsonTextReader(new StreamReader(new MemoryStream(myQueueItem.AsBytes))));
+
+            var endpoint = new EndpointConfiguration("FunctionsDemoASQTrigger");
             var serverless = endpoint.UseTransport<ServerlessTransport<AzureStorageQueueTransport>>();
             var transport = serverless.BaseTransportConfiguration();
 
             var asbConnectionString = config.GetValue<string>("Values:ASQ");
             transport.ConnectionString(asbConnectionString);
-
-            transport.Routing().RouteToEndpoint(typeof(ASQMessage), "ASQTriggerQueue");
 
             endpoint.UsePersistence<InMemoryPersistence>();
             //TODO: package conflicts with json serializer with functions
@@ -53,8 +51,8 @@ namespace AzureFunctionsDemo
             var pipeline = serverless.PipelineAccess();
             MessageContext messageContext = new MessageContext(
                 Guid.NewGuid().ToString("N"),
-                message.UserProperties.ToDictionary(x => x.Key, x => x.Value.ToString()),
-                message.Body,
+                msg.Headers,
+                msg.Body,
                 new TransportTransaction(),
                 new CancellationTokenSource(),
                 new ContextBag());
