@@ -45,7 +45,7 @@ namespace ServerlessTransportSpike
             return baseTransportInfrastructure.ToTransportAddress(logicalAddress);
         }
 
-        public override IEnumerable<Type> DeliveryConstraints => 
+        public override IEnumerable<Type> DeliveryConstraints =>
             baseTransportInfrastructure.DeliveryConstraints;
 
         public override TransportTransactionMode TransactionMode { get; } = TransportTransactionMode.None;
