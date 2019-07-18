@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureFunctionsDemo", "..\De
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerlessTransportSpike.Demo", "..\Demos\ServerlessTransportSpike.Demo\ServerlessTransportSpike.Demo.csproj", "{E8DD4790-9A3F-4828-97EF-D34E594CAE98}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demos", "Demos", "{DA965FE3-CF25-4AA0-B241-D62F50CA26C2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +32,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B81F9A93-9993-4E5E-86FF-D8D6E5E5A281} = {DA965FE3-CF25-4AA0-B241-D62F50CA26C2}
+		{E8DD4790-9A3F-4828-97EF-D34E594CAE98} = {DA965FE3-CF25-4AA0-B241-D62F50CA26C2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9B344CD1-037D-452C-9268-B99296A966A8}
