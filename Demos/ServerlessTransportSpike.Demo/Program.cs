@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using NServiceBus;
 using NServiceBus.Extensibility;
 using NServiceBus.Transport;
+using NServiceBus.Serverless;
 
 namespace ServerlessTransportSpike.Demo
 {

@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ServerlessTransportSpike\ServerlessTransportSpike.csproj" />
+    <ProjectReference Include="..\..\src\NServiceBus.Serverless\NServiceBus.Serverless.csproj" />
   </ItemGroup>
 
 </Project>

@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 using NServiceBus;
 using NServiceBus.Extensibility;
 using NServiceBus.Transport;
-using ServerlessTransportSpike;
+using NServiceBus.Serverless;
 using ExecutionContext = Microsoft.Azure.WebJobs.ExecutionContext;
 
 namespace AzureFunctionsDemo
@@ -69,8 +69,8 @@ namespace AzureFunctionsDemo
                     {Headers.EnclosedMessageTypes, typeof(DemoMessage).FullName}
                 },
                 Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message)),
-                new TransportTransaction(), 
-                new CancellationTokenSource(), 
+                new TransportTransaction(),
+                new CancellationTokenSource(),
                 new ContextBag());
 
             await Endpoint.Start(endpoint);

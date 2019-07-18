@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 using NServiceBus;
 using NServiceBus.Extensibility;
 using NServiceBus.Transport;
-using ServerlessTransportSpike;
+using NServiceBus.Serverless;
 using ExecutionContext = Microsoft.Azure.WebJobs.ExecutionContext;
 
 namespace AzureFunctionsDemo
