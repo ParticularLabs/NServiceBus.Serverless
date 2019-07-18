@@ -4,10 +4,7 @@ using NServiceBus.Transport;
 
 namespace NServiceBus
 {
-    /// <summary>
-    /// Extensions for serverless transports
-    /// </summary>
-    public static class ServerlessTransportExtensions
+    static class ServerlessTransportExtensions
     {
         /// <summary>
         /// Provides access to the PipelineInvoker
@@ -18,6 +15,11 @@ namespace NServiceBus
             this TransportExtensions<ServerlessTransport<TBaseTransport>> transportConfiguration) where TBaseTransport : TransportDefinition, new()
         {
             return transportConfiguration.GetSettings().GetOrCreate<PipelineInvoker>();
+        }
+
+        public static void UseInMemoryRetries<TBaseTransport>(this TransportExtensions<ServerlessTransport<TBaseTransport>> transportConfiguration, bool useInMemoryRetries) where TBaseTransport : TransportDefinition, new()
+        {
+            transportConfiguration.GetSettings().Set(SettingsKeys.UseInMemoryRetries, useInMemoryRetries);
         }
 
         /// <summary>
