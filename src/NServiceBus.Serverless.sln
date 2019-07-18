@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.29025.244
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NServiceBus.Serverless", "NServiceBus.Serverless\NServiceBus.Serverless.csproj", "{E07C0882-FE87-44F5-A349-0202B5816D1E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureFunctionsDemo", "..\Demos\AzureFunctionsDemo\AzureFunctionsDemo.csproj", "{B81F9A93-9993-4E5E-86FF-D8D6E5E5A281}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerlessTransportSpike.Demo", "..\Demos\ServerlessTransportSpike.Demo\ServerlessTransportSpike.Demo.csproj", "{E8DD4790-9A3F-4828-97EF-D34E594CAE98}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{E07C0882-FE87-44F5-A349-0202B5816D1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E07C0882-FE87-44F5-A349-0202B5816D1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E07C0882-FE87-44F5-A349-0202B5816D1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B81F9A93-9993-4E5E-86FF-D8D6E5E5A281}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B81F9A93-9993-4E5E-86FF-D8D6E5E5A281}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B81F9A93-9993-4E5E-86FF-D8D6E5E5A281}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B81F9A93-9993-4E5E-86FF-D8D6E5E5A281}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8DD4790-9A3F-4828-97EF-D34E594CAE98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8DD4790-9A3F-4828-97EF-D34E594CAE98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8DD4790-9A3F-4828-97EF-D34E594CAE98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8DD4790-9A3F-4828-97EF-D34E594CAE98}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
