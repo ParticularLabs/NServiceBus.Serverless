@@ -20,7 +20,8 @@ namespace NServiceBus.Serverless
 
         public override TransportReceiveInfrastructure ConfigureReceiveInfrastructure()
         {
-            var pipelineInvoker = settings.GetOrCreate<PipelineInvoker>();
+            var pipelineInvoker = settings.Get<PipelineInvoker>();
+
             return new ManualPipelineInvocationInfrastructure(pipelineInvoker);
         }
 

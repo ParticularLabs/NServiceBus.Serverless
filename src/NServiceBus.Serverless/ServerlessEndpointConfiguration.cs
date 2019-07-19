@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using NServiceBus.Configuration.AdvancedExtensibility;
 using NServiceBus.Container;
 using NServiceBus.DataBus;
 using NServiceBus.ObjectBuilder;
@@ -38,6 +39,10 @@ namespace NServiceBus.Serverless
             });
             endpointConfiguration.CustomDiagnosticsWriter(customDiagnosticsWriter);
             endpointConfiguration.SendFailedMessagesTo(SettingsKeys.ErrorQueueDisabled);
+
+            invoker = new PipelineInvoker(UseInMemoryRetries);
+
+            endpointConfiguration.GetSettings().Set(invoker);
         }
 
         /// <summary>
@@ -49,11 +54,7 @@ namespace NServiceBus.Serverless
         {
             var serverlessTransportConfiguration = endpointConfiguration.UseTransport<ServerlessTransport<TDispatchTransport>>();
 
-            serverlessTransportConfiguration.UseInMemoryRetries(UseInMemoryRetries);
-
-            invoker = serverlessTransportConfiguration.PipelineAccess();
-
-            return serverlessTransportConfiguration.BaseTransportConfiguration();
+            return new TransportExtensions<TDispatchTransport>(serverlessTransportConfiguration.GetSettings());
         }
 
         /// <summary>
@@ -171,7 +172,7 @@ namespace NServiceBus.Serverless
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public PersistenceExtensions<T> UsePersistence<T>() where T : PersistenceDefinition, new() => endpointConfiguration.UsePersistence<T>();
+        public PersistenceExtensions<T> UsePersistence<T>() where T : PersistenceDefinition => endpointConfiguration.UsePersistence<T>();
 
         /// <summary>
         ///

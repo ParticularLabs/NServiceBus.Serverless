@@ -16,5 +16,10 @@ namespace NServiceBus.Serverless
         ///
         /// </summary>
         public string NativeMessageId { get; set; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public int NumberOfDeliveryAttempts { get; set; }
     }
 }

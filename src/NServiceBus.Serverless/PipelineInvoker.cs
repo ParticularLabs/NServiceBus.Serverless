@@ -5,14 +5,17 @@ using NServiceBus.Transport;
 
 namespace NServiceBus.Serverless
 {
-    /// <summary>
-    /// Provides access to the NServiceBus pipeline without a message pump
-    /// </summary>
-    public class PipelineInvoker : IPushMessages, IPipelineInvoker
+    class PipelineInvoker : IPushMessages, IPipelineInvoker
     {
         Func<MessageContext, Task> onMessage;
         Func<ErrorContext, Task<ErrorHandleResult>> onError;
         CriticalError criticalError;
+        bool useInMemoryRetries;
+
+        public PipelineInvoker(bool useInMemoryRetries)
+        {
+            this.useInMemoryRetries = useInMemoryRetries;
+        }
 
         Task IPushMessages.Init(Func<MessageContext, Task> onMessage, Func<ErrorContext, Task<ErrorHandleResult>> onError, CriticalError criticalError, PushSettings settings)
         {
@@ -29,14 +32,8 @@ namespace NServiceBus.Serverless
             return Task.CompletedTask;
         }
 
-        /// <summary>
-        /// Push a message to the pipeline
-        /// </summary>
-        /// <param name="messageContext"></param>
-        /// <returns></returns>
         public async Task PushMessage(NativeMessageContext messageContext)
         {
-            var numberOfDeliveryAttempts = 0;
             var processed = false;
             var errorHandled = false;
 
@@ -51,7 +48,7 @@ namespace NServiceBus.Serverless
                 {
                     if (onError != null)
                     {
-                        ++numberOfDeliveryAttempts;
+                        ++messageContext.NumberOfDeliveryAttempts;
 
                         var errorContext = new ErrorContext(
                             exception,
@@ -59,7 +56,7 @@ namespace NServiceBus.Serverless
                             messageContext.NativeMessageId,
                             messageContext.MessageContext.Body ?? new byte[0],
                             new TransportTransaction(),
-                            numberOfDeliveryAttempts);
+                            messageContext.NumberOfDeliveryAttempts);
 
                         try
                         {
@@ -68,8 +65,11 @@ namespace NServiceBus.Serverless
                         catch (Exception ex)
                         {
                             criticalError.Raise($"Failed to execute recoverability policy for message with native ID: `{messageContext.NativeMessageId}`", ex);
+                        }
 
-                            return;
+                        if (!errorHandled && !useInMemoryRetries)
+                        {
+                            throw;
                         }
                     }
                     else
