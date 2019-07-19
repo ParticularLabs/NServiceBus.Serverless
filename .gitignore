@@ -1,3 +1,6 @@
+# Azure Functions localsettings file
+local.settings.json
+
 nugets
 deploy
 build32

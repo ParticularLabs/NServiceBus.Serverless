@@ -14,8 +14,8 @@ namespace NServiceBus
         /// </summary>
         /// <param name="transportConfiguration"></param>
         /// <returns></returns>
-        public static PipelineInvoker PipelineAccess<TBaseTransport>(
-            this TransportExtensions<ServerlessTransport<TBaseTransport>> transportConfiguration) where TBaseTransport : TransportDefinition, new()
+        public static PipelineInvoker PipelineAccess(
+            this TransportExtensions transportConfiguration)
         {
             return transportConfiguration.GetSettings().GetOrCreate<PipelineInvoker>();
         }
@@ -27,7 +27,7 @@ namespace NServiceBus
         /// <param name="transportConfiguration"></param>
         /// <returns></returns>
         public static TransportExtensions<TBaseTransport> BaseTransportConfiguration<TBaseTransport>(
-            this TransportExtensions<ServerlessTransport<TBaseTransport>> transportConfiguration) where TBaseTransport : TransportDefinition, new()
+            this TransportExtensions<ServerlessTransport> transportConfiguration) where TBaseTransport : TransportDefinition, new()
         {
             return new TransportExtensions<TBaseTransport>(transportConfiguration.GetSettings());
         }

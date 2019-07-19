@@ -6,17 +6,16 @@ namespace NServiceBus.Serverless
     /// <summary>
     /// Transport definition for Serverless Triggers
     /// </summary>
-    public class ServerlessTransport<TBaseTransport> : TransportDefinition
-        where TBaseTransport : TransportDefinition, new()
+    public class ServerlessTransport : TransportDefinition
     {
-        private readonly TBaseTransport baseTransport;
+        private readonly TransportDefinition baseTransport;
 
         /// <summary>
         /// Transport definition for Serverless Triggers
         /// </summary>
-        public ServerlessTransport()
+        public ServerlessTransport(TransportDefinition baseTransport)
         {
-            baseTransport = new TBaseTransport();
+            this.baseTransport = baseTransport;
         }
 
         /// <summary>
@@ -28,7 +27,7 @@ namespace NServiceBus.Serverless
         public override TransportInfrastructure Initialize(SettingsHolder settings, string connectionString)
         {
             var baseTransportInfrastructure = baseTransport.Initialize(settings, connectionString);
-            return new ServerlessTransportInfrastructure<TBaseTransport>(baseTransportInfrastructure, settings);
+            return new ServerlessTransportInfrastructure(baseTransportInfrastructure, settings);
         }
 
         /// <summary>
