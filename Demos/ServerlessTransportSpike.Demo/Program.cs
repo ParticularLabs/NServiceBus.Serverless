@@ -13,24 +13,14 @@ namespace ServerlessTransportSpike.Demo
 {
     class Program
     {
+        static PipelineInvoker pipeline;
+        static SemaphoreSlim semaphoreLock = new SemaphoreSlim(initialCount: 1, maxCount: 1);
+
         static async Task Main(string[] args)
         {
-            var config = new EndpointConfiguration("Test");
-            //var transport = config.UseTransport<ServerlessTransport<AzureServiceBusTransport>>();
-            //var asbTransportConfig = transport.BaseTransportConfiguration();
+            var invoker = await GetPipelineInvoker();
 
-            var transport = config.UseTransport<ServerlessTransport<LearningTransport>>();
-            transport.Routing().RouteToEndpoint(typeof(OutgoingMessage), "OutgoingTest");
-            var learningTransportConfig = transport.BaseTransportConfiguration();
-            config.PurgeOnStartup(true);
-
-            var pipeline = transport.PipelineAccess();
-            config.UsePersistence<LearningPersistence>();
-            config.UseSerialization<NewtonsoftSerializer>();
-
-            var endpoint = await Endpoint.Start(config);
-
-            await pipeline.PushMessage(
+            await invoker.PushMessage(
                 new MessageContext(Guid.NewGuid().ToString("N"),
                     new Dictionary<string, string>()
                     {
@@ -40,6 +30,33 @@ namespace ServerlessTransportSpike.Demo
                     new TransportTransaction(),
                     new CancellationTokenSource(),
                     new ContextBag()));
+        }
+
+        static async Task<PipelineInvoker> GetPipelineInvoker()
+        {
+            semaphoreLock.Wait();
+
+            if (pipeline == null)
+            {
+                var config = new EndpointConfiguration("Test");
+                //var transport = config.UseTransport<ServerlessTransport<AzureServiceBusTransport>>();
+                //var asbTransportConfig = transport.BaseTransportConfiguration();
+
+                var transport = config.UseTransport<ServerlessTransport<LearningTransport>>();
+                transport.Routing().RouteToEndpoint(typeof(OutgoingMessage), "OutgoingTest");
+                var learningTransportConfig = transport.BaseTransportConfiguration();
+                config.PurgeOnStartup(true);
+
+                pipeline = transport.PipelineAccess();
+                config.UsePersistence<LearningPersistence>();
+                config.UseSerialization<NewtonsoftSerializer>();
+
+                await Endpoint.Start(config);
+            }
+
+            semaphoreLock.Release();
+
+            return pipeline;
         }
     }
 }
