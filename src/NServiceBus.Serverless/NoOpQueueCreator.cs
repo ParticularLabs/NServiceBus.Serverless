@@ -7,7 +7,7 @@ namespace NServiceBus.Serverless
     {
         public Task CreateQueueIfNecessary(QueueBindings queueBindings, string identity)
         {
-            return TaskEx.CompletedTask;
+            return Task.CompletedTask;
         }
     }
 }
