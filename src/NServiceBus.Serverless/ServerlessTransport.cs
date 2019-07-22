@@ -6,7 +6,7 @@ namespace NServiceBus.Serverless
     /// <summary>
     /// Transport definition for Serverless Triggers
     /// </summary>
-    public class ServerlessTransport<TBaseTransport> : TransportDefinition
+    class ServerlessTransport<TBaseTransport> : TransportDefinition
         where TBaseTransport : TransportDefinition, new()
     {
         private readonly TBaseTransport baseTransport;

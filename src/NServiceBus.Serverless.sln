@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerlessTransportSpike.De
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demos", "Demos", "{DA965FE3-CF25-4AA0-B241-D62F50CA26C2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NServiceBus.Serverless.AzureServiceBus", "NServiceBus.Serverless.AzureServiceBus\NServiceBus.Serverless.AzureServiceBus.csproj", "{D0334EBC-F93A-4529-8166-D4324E4EF186}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{E8DD4790-9A3F-4828-97EF-D34E594CAE98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E8DD4790-9A3F-4828-97EF-D34E594CAE98}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E8DD4790-9A3F-4828-97EF-D34E594CAE98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0334EBC-F93A-4529-8166-D4324E4EF186}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0334EBC-F93A-4529-8166-D4324E4EF186}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0334EBC-F93A-4529-8166-D4324E4EF186}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0334EBC-F93A-4529-8166-D4324E4EF186}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -36,6 +42,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{B81F9A93-9993-4E5E-86FF-D8D6E5E5A281} = {DA965FE3-CF25-4AA0-B241-D62F50CA26C2}
 		{E8DD4790-9A3F-4828-97EF-D34E594CAE98} = {DA965FE3-CF25-4AA0-B241-D62F50CA26C2}
+		{D0334EBC-F93A-4529-8166-D4324E4EF186} = {DA965FE3-CF25-4AA0-B241-D62F50CA26C2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9B344CD1-037D-452C-9268-B99296A966A8}

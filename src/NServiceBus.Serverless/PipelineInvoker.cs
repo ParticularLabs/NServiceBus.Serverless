@@ -1,20 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus.Transport;
 
 namespace NServiceBus.Serverless
 {
-    class PipelineInvoker : IPushMessages, IPipelineInvoker
+    class PipelineInvoker : IPushMessages
     {
         Func<MessageContext, Task> onMessage;
         Func<ErrorContext, Task<ErrorHandleResult>> onError;
         CriticalError criticalError;
-        bool useInMemoryRetries;
+        readonly bool useInMemoryRetries;
+        readonly CancellationToken token;
 
-        public PipelineInvoker(bool useInMemoryRetries)
+        public PipelineInvoker(bool useInMemoryRetries, CancellationToken token)
         {
             this.useInMemoryRetries = useInMemoryRetries;
+            this.token = token;
         }
 
         Task IPushMessages.Init(Func<MessageContext, Task> onMessage, Func<ErrorContext, Task<ErrorHandleResult>> onError, CriticalError criticalError, PushSettings settings)
@@ -37,7 +40,7 @@ namespace NServiceBus.Serverless
             var processed = false;
             var errorHandled = false;
 
-            while (!processed && !errorHandled)
+            while (!processed && !errorHandled && !token.IsCancellationRequested)
             {
                 try
                 {
@@ -46,7 +49,7 @@ namespace NServiceBus.Serverless
                 }
                 catch (Exception exception)
                 {
-                    if (onError != null)
+                    if (onError != null && !token.IsCancellationRequested)
                     {
                         ++messageContext.NumberOfDeliveryAttempts;
 

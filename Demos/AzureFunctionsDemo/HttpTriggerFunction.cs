@@ -19,6 +19,7 @@ using ExecutionContext = Microsoft.Azure.WebJobs.ExecutionContext;
 
 namespace AzureFunctionsDemo
 {
+    /**
     public static class HttpTriggerFunction
     {
         static PipelineInvoker pipeline;
@@ -98,4 +99,5 @@ namespace AzureFunctionsDemo
             return pipeline;
         }
     }
+    **/
 }

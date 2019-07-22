@@ -11,27 +11,30 @@ using NServiceBus.Serverless;
 
 namespace ServerlessTransportSpike.Demo
 {
+
     class Program
     {
-        static PipelineInvoker pipeline;
-        static SemaphoreSlim semaphoreLock = new SemaphoreSlim(initialCount: 1, maxCount: 1);
+        //static PipelineInvoker pipeline;
+        //static SemaphoreSlim semaphoreLock = new SemaphoreSlim(initialCount: 1, maxCount: 1);
 
         static async Task Main(string[] args)
         {
-            var invoker = await GetPipelineInvoker();
+            await Task.CompletedTask;
 
-            await invoker.PushMessage(
-                new MessageContext(Guid.NewGuid().ToString("N"),
-                    new Dictionary<string, string>()
-                    {
-                        { Headers.EnclosedMessageTypes, typeof(TestMessage).AssemblyQualifiedName }
-                    },
-                    Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new TestMessage())),
-                    new TransportTransaction(),
-                    new CancellationTokenSource(),
-                    new ContextBag()));
+            //var invoker = await GetPipelineInvoker();
+
+            //await invoker.PushMessage(
+            //    new MessageContext(Guid.NewGuid().ToString("N"),
+            //        new Dictionary<string, string>()
+            //        {
+            //            { Headers.EnclosedMessageTypes, typeof(TestMessage).AssemblyQualifiedName }
+            //        },
+            //        Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new TestMessage())),
+            //        new TransportTransaction(),
+            //        new CancellationTokenSource(),
+            //        new ContextBag()));
         }
-
+        /**
         static async Task<PipelineInvoker> GetPipelineInvoker()
         {
             semaphoreLock.Wait();
@@ -58,5 +61,7 @@ namespace ServerlessTransportSpike.Demo
 
             return pipeline;
         }
+
+        **/
     }
 }
