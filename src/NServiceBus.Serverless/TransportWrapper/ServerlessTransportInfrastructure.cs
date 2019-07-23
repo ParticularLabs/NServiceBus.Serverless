@@ -6,10 +6,10 @@ using NServiceBus.Transport;
 
 namespace NServiceBus.Serverless
 {
-    sealed class ServerlessTransportInfrastructure<TBaseInfrastructure> : TransportInfrastructure
+    class ServerlessTransportInfrastructure<TBaseInfrastructure> : TransportInfrastructure
     {
-        private readonly TransportInfrastructure baseTransportInfrastructure;
-        private readonly SettingsHolder settings;
+        readonly TransportInfrastructure baseTransportInfrastructure;
+        readonly SettingsHolder settings;
 
         public ServerlessTransportInfrastructure(TransportInfrastructure baseTransportInfrastructure,
             SettingsHolder settings)
