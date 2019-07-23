@@ -4,6 +4,7 @@
     {
         public HttpTriggerEndpoint(string endpointName) : base(endpointName)
         {
+            InMemoryRetries(3);
         }
     }
 }

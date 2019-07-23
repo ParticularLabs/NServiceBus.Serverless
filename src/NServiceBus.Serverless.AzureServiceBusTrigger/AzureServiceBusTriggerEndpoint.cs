@@ -4,7 +4,8 @@
     {
         public AzureServiceBusTriggerEndpoint(string endpointName) : base(endpointName)
         {
-            //TODO do we need to configure JSON serializer?
+            //handle retries by native queue capabilities
+            InMemoryRetries(0);
         }
     }
 }

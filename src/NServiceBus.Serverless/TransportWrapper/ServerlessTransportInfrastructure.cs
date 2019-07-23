@@ -47,7 +47,8 @@ namespace NServiceBus.Serverless
         public override IEnumerable<Type> DeliveryConstraints =>
             baseTransportInfrastructure.DeliveryConstraints;
 
-        public override TransportTransactionMode TransactionMode { get; } = TransportTransactionMode.None;
+        //support ReceiveOnly so that we can use immediate retries
+        public override TransportTransactionMode TransactionMode { get; } = TransportTransactionMode.ReceiveOnly;
 
         public override OutboundRoutingPolicy OutboundRoutingPolicy =>
             baseTransportInfrastructure.OutboundRoutingPolicy;
