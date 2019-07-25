@@ -12,7 +12,7 @@ namespace AzureFunctionsDemo
 
     public class ASQTriggerFunction
     {
-        static ServerlessEndpointSession serverlessSession;
+        static ServerlessEndpoint serverlessEndpoint;
 
         [FunctionName(nameof(ASQTriggerFunction))]
         public static async Task QueueTrigger(
@@ -25,9 +25,9 @@ namespace AzureFunctionsDemo
             var azureServiceBusTriggerEndpoint = new AzureStorageQueueTriggerEndpoint("CustomEndpointNameForWhateverReason");
             azureServiceBusTriggerEndpoint.UseSerialization<NewtonsoftSerializer>();
 
-            serverlessSession = serverlessSession ?? new ServerlessEndpointSession(azureServiceBusTriggerEndpoint);
+            serverlessEndpoint = serverlessEndpoint ?? new ServerlessEndpoint(azureServiceBusTriggerEndpoint);
 
-            await serverlessSession.Process(myQueueItem);
+            await serverlessEndpoint.Process(myQueueItem);
         }
     }
 }

@@ -9,7 +9,7 @@
 
     public static class HttpTriggerExtensions
     {
-        public static Task Process<TMessage>(this ServerlessEndpointSession session, byte[] message)
+        public static Task Process<TMessage>(this ServerlessEndpoint endpoint, byte[] message)
         {
             var messageContext = new MessageContext(
                 Guid.NewGuid().ToString("N"),
@@ -22,7 +22,7 @@
                 new CancellationTokenSource(),
                 new ContextBag());
 
-            return session.Process(messageContext);
+            return endpoint.Process(messageContext);
         }
     }
 }

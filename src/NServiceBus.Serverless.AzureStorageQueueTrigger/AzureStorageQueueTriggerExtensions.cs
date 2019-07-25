@@ -12,7 +12,7 @@
 
     public static class AzureStorageQueueTriggerExtensions
     {
-        public static Task Process(this ServerlessEndpointSession session, CloudQueueMessage message)
+        public static Task Process(this ServerlessEndpoint endpoint, CloudQueueMessage message)
         {
             var serializer = new JsonSerializer();
             var msg = serializer.Deserialize<ASQMessageWrapper>(
@@ -26,7 +26,7 @@
                 new CancellationTokenSource(),
                 new ContextBag());
 
-            return session.Process(messageContext);
+            return endpoint.Process(messageContext);
         }
     }
 }

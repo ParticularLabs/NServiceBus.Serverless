@@ -7,13 +7,14 @@
 
     /// <summary>
     /// An NServiceBus endpoint which does not receive messages automatically but only handles messages explicitly passed to it by the caller.
+    /// Instances of <see cref="ServerlessEndpoint"/> can be cached and are thread-safe.
     /// </summary>
-    public class ServerlessEndpointSession
+    public class ServerlessEndpoint
     {
         /// <summary>
         /// Create a new session based on the configuration factory provided.
         /// </summary>
-        public ServerlessEndpointSession(Func<ServerlessEndpointConfiguration> configurationFactory)
+        public ServerlessEndpoint(Func<ServerlessEndpointConfiguration> configurationFactory)
         {
             this.configurationFactory = configurationFactory;
         }
@@ -21,7 +22,7 @@
         /// <summary>
         /// Create a new session based on the configuration provided.
         /// </summary>
-        public ServerlessEndpointSession(ServerlessEndpointConfiguration configuration)
+        public ServerlessEndpoint(ServerlessEndpointConfiguration configuration)
         {
             configurationFactory = () => configuration;
         }

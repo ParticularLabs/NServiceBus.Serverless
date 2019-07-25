@@ -33,7 +33,7 @@ namespace AzureFunctionsDemo
             var messageBody = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message));
 
             //no caching
-            var serverlessSession = new ServerlessEndpointSession(() =>
+            var serverlessEndpoint = new ServerlessEndpoint(() =>
             {
                 var config = new ConfigurationBuilder()
                     .SetBasePath(context.FunctionAppDirectory)
@@ -53,7 +53,7 @@ namespace AzureFunctionsDemo
                 return serverlessConfig;
             });
 
-            await serverlessSession.Process<DemoMessage>(messageBody);
+            await serverlessEndpoint.Process<DemoMessage>(messageBody);
 
             return name != null
                 ? (ActionResult)new OkObjectResult($"Hello, {name}")

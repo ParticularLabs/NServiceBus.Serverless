@@ -10,7 +10,7 @@
 
     public static class AzureServiceBusTriggerExtensions
     {
-        public static Task Process(this ServerlessEndpointSession session, Message message)
+        public static Task Process(this ServerlessEndpoint endpoint, Message message)
         {
             var context = new MessageContext(
                 Guid.NewGuid().ToString("N"),
@@ -20,7 +20,7 @@
                 new CancellationTokenSource(),
                 new ContextBag());
 
-            return session.Process(context);
+            return endpoint.Process(context);
         }
     }
 }
