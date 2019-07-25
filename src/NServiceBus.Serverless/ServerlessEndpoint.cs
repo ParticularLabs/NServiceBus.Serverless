@@ -6,8 +6,9 @@
     using Transport;
 
     /// <summary>
-    /// An NServiceBus endpoint which does not receive messages automatically but only handles messages explicitly passed to it by the caller.
-    /// Instances of <see cref="ServerlessEndpoint"/> can be cached and are thread-safe.
+    /// An NServiceBus endpoint which does not receive messages automatically but only handles messages explicitly passed to it
+    /// by the caller.
+    /// Instances of <see cref="ServerlessEndpoint" /> can be cached and are thread-safe.
     /// </summary>
     public class ServerlessEndpoint
     {

@@ -1,19 +1,15 @@
-﻿using System.Threading.Tasks;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Extensions.Logging;
-using Microsoft.WindowsAzure.Storage.Queue;
-using NServiceBus;
-using NServiceBus.Serverless;
-using ExecutionContext = Microsoft.Azure.WebJobs.ExecutionContext;
-
-namespace AzureFunctionsDemo
+﻿namespace AzureFunctionsDemo
 {
+    using System.Threading.Tasks;
+    using Microsoft.Azure.WebJobs;
+    using Microsoft.Extensions.Logging;
+    using Microsoft.WindowsAzure.Storage.Queue;
+    using NServiceBus;
+    using NServiceBus.Serverless;
     using NServiceBus.Serverless.AzureStorageQueueTrigger;
 
     public class ASQTriggerFunction
     {
-        static ServerlessEndpoint serverlessEndpoint;
-
         [FunctionName(nameof(ASQTriggerFunction))]
         public static async Task QueueTrigger(
             [QueueTrigger("ASQTriggerQueue", Connection = "ASQ")]
@@ -21,7 +17,6 @@ namespace AzureFunctionsDemo
             ILogger log,
             ExecutionContext context)
         {
-
             var azureServiceBusTriggerEndpoint = new AzureStorageQueueTriggerEndpoint("CustomEndpointNameForWhateverReason");
             azureServiceBusTriggerEndpoint.UseSerialization<NewtonsoftSerializer>();
 
@@ -29,5 +24,7 @@ namespace AzureFunctionsDemo
 
             await serverlessEndpoint.Process(myQueueItem);
         }
+
+        static ServerlessEndpoint serverlessEndpoint;
     }
 }

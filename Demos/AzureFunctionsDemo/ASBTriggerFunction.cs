@@ -1,21 +1,17 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.Azure.ServiceBus;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using NServiceBus;
-using NServiceBus.Serverless;
-using ExecutionContext = Microsoft.Azure.WebJobs.ExecutionContext;
-
-namespace AzureFunctionsDemo
+﻿namespace AzureFunctionsDemo
 {
+    using System;
+    using System.Threading.Tasks;
+    using Microsoft.Azure.ServiceBus;
+    using Microsoft.Azure.WebJobs;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Logging;
+    using NServiceBus;
+    using NServiceBus.Serverless;
     using NServiceBus.Serverless.AzureServiceBusTrigger;
 
     public class ASBTriggerFunction
     {
-        static ServerlessEndpointSession serverlessSession;
-
         [FunctionName(nameof(ASBTriggerFunction))]
         public static async Task Run(
             [ServiceBusTrigger(queueName: "ASBTriggerQueue", Connection = "ASB")]
@@ -30,7 +26,7 @@ namespace AzureFunctionsDemo
             log.LogInformation($"C# ServiceBus queue trigger function processed message: {messageId}");
 
             //with caching
-            serverlessSession = serverlessSession ?? new ServerlessEndpointSession(() =>
+            serverlessEndpoint = serverlessEndpoint ?? new ServerlessEndpoint(() =>
             {
                 var config = new ConfigurationBuilder()
                     .SetBasePath(context.FunctionAppDirectory)
@@ -48,7 +44,9 @@ namespace AzureFunctionsDemo
                 return azureServiceBusTriggerEndpoint;
             });
 
-            await serverlessSession.Process(message);
+            await serverlessEndpoint.Process(message);
         }
+
+        static ServerlessEndpoint serverlessEndpoint;
     }
 }

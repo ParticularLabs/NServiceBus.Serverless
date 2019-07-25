@@ -10,12 +10,6 @@
     /// </summary>
     public class ServerlessEndpointConfiguration
     {
-        readonly ServerlessRecoverabilityPolicy recoverabilityPolicy = new ServerlessRecoverabilityPolicy();
-
-        internal EndpointConfiguration EndpointConfiguration { get; }
-
-        internal PipelineInvoker PipelineInvoker { get; private set; }
-        
         /// <summary>
         /// Creates a new configuration.
         /// </summary>
@@ -37,10 +31,14 @@
             UseTransportForDispatch<DummyDispatcher>();
         }
 
+        internal EndpointConfiguration EndpointConfiguration { get; }
+
+        internal PipelineInvoker PipelineInvoker { get; private set; }
+
         /// <summary>
         /// Define a transport to be used when sending and publishing messages.
         /// </summary>
-        public TransportExtensions<TTransport> UseTransportForDispatch<TTransport>() 
+        public TransportExtensions<TTransport> UseTransportForDispatch<TTransport>()
             where TTransport : TransportDefinition, new()
         {
             var serverlessTransport = EndpointConfiguration.UseTransport<ServerlessTransport<TTransport>>();
@@ -58,7 +56,8 @@
         }
 
         /// <summary>
-        /// Configures the amount of times a message should be retried immediately when it fails. After exceeding the number of retries, the failure will be throw back to the caller.
+        /// Configures the amount of times a message should be retried immediately when it fails. After exceeding the number of
+        /// retries, the failure will be throw back to the caller.
         /// </summary>
         public void InMemoryRetries(int numberOfRetries)
         {
@@ -66,7 +65,8 @@
         }
 
         /// <summary>
-        /// Moves a failed message to the error queue instead of throwing the exception of a failed message back to the caller. <c>false</c> by default.
+        /// Moves a failed message to the error queue instead of throwing the exception of a failed message back to the caller.
+        /// <c>false</c> by default.
         /// </summary>
         public void SendFailedMessagesToErrorQueue(bool sendFailedMessagesToErrorQueue = true)
         {
@@ -81,5 +81,7 @@
             //allow access to the underlying EndpointConfiguration for all sorts of configurations/workarounds
             advancedConfiguration(EndpointConfiguration);
         }
+
+        readonly ServerlessRecoverabilityPolicy recoverabilityPolicy = new ServerlessRecoverabilityPolicy();
     }
 }

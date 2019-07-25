@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace AzureFunctionsDemo
+﻿namespace AzureFunctionsDemo
 {
+    using System.Collections.Generic;
+
     public class ASQMessageWrapper
     {
         public string IdForCorrelation { get; set; }

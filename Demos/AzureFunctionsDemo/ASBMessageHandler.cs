@@ -1,9 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
-using NServiceBus;
-
-namespace AzureFunctionsDemo
+﻿namespace AzureFunctionsDemo
 {
+    using System;
+    using System.Threading.Tasks;
+    using NServiceBus;
+
     public class ASBMessageHandler : IHandleMessages<ASBMessage>
     {
         public Task Handle(ASBMessage message, IMessageHandlerContext context)

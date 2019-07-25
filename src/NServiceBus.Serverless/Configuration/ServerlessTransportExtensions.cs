@@ -1,9 +1,9 @@
-﻿using NServiceBus.Configuration.AdvancedExtensibility;
-using NServiceBus.Serverless;
-using NServiceBus.Transport;
-
-namespace NServiceBus
+﻿namespace NServiceBus
 {
+    using Configuration.AdvancedExtensibility;
+    using Serverless;
+    using Transport;
+
     static class ServerlessTransportExtensions
     {
         public static PipelineInvoker PipelineAccess<TBaseTransport>(

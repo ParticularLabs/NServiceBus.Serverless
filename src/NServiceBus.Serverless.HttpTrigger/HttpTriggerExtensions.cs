@@ -13,7 +13,7 @@
         {
             var messageContext = new MessageContext(
                 Guid.NewGuid().ToString("N"),
-                new Dictionary<string, string>()
+                new Dictionary<string, string>
                 {
                     {Headers.EnclosedMessageTypes, typeof(TMessage).FullName}
                 },

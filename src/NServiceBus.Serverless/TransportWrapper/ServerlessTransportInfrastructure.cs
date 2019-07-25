@@ -1,22 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using NServiceBus.Routing;
-using NServiceBus.Settings;
-using NServiceBus.Transport;
-
-namespace NServiceBus.Serverless
+﻿namespace NServiceBus.Serverless
 {
+    using System;
+    using System.Collections.Generic;
+    using Routing;
+    using Settings;
+    using Transport;
+
     class ServerlessTransportInfrastructure<TBaseInfrastructure> : TransportInfrastructure
     {
-        readonly TransportInfrastructure baseTransportInfrastructure;
-        readonly SettingsHolder settings;
-
         public ServerlessTransportInfrastructure(TransportInfrastructure baseTransportInfrastructure,
             SettingsHolder settings)
         {
             this.baseTransportInfrastructure = baseTransportInfrastructure;
             this.settings = settings;
         }
+
+        public override IEnumerable<Type> DeliveryConstraints =>
+            baseTransportInfrastructure.DeliveryConstraints;
+
+        //support ReceiveOnly so that we can use immediate retries
+        public override TransportTransactionMode TransactionMode { get; } = TransportTransactionMode.ReceiveOnly;
+
+        public override OutboundRoutingPolicy OutboundRoutingPolicy =>
+            baseTransportInfrastructure.OutboundRoutingPolicy;
 
         public override TransportReceiveInfrastructure ConfigureReceiveInfrastructure()
         {
@@ -44,13 +50,7 @@ namespace NServiceBus.Serverless
             return baseTransportInfrastructure.ToTransportAddress(logicalAddress);
         }
 
-        public override IEnumerable<Type> DeliveryConstraints =>
-            baseTransportInfrastructure.DeliveryConstraints;
-
-        //support ReceiveOnly so that we can use immediate retries
-        public override TransportTransactionMode TransactionMode { get; } = TransportTransactionMode.ReceiveOnly;
-
-        public override OutboundRoutingPolicy OutboundRoutingPolicy =>
-            baseTransportInfrastructure.OutboundRoutingPolicy;
+        readonly TransportInfrastructure baseTransportInfrastructure;
+        readonly SettingsHolder settings;
     }
 }
