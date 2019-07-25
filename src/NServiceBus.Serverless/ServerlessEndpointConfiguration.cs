@@ -6,7 +6,7 @@
     using Transport;
 
     /// <summary>
-    /// 
+    /// The configuration for an NServiceBus endpoint optimized for serverless environments.
     /// </summary>
     public class ServerlessEndpointConfiguration
     {
@@ -17,7 +17,7 @@
         internal PipelineInvoker PipelineInvoker { get; private set; }
         
         /// <summary>
-        /// 
+        /// Creates a new configuration.
         /// </summary>
         public ServerlessEndpointConfiguration(string endpointName)
         {
@@ -38,7 +38,7 @@
         }
 
         /// <summary>
-        /// 
+        /// Define a transport to be used when sending and publishing messages.
         /// </summary>
         public TransportExtensions<TTransport> UseTransportForDispatch<TTransport>() 
             where TTransport : TransportDefinition, new()
@@ -50,7 +50,7 @@
         }
 
         /// <summary>
-        /// 
+        /// Define the serializer to be used.
         /// </summary>
         public SerializationExtensions<T> UseSerialization<T>() where T : SerializationDefinition, new()
         {
@@ -58,7 +58,7 @@
         }
 
         /// <summary>
-        /// 
+        /// Configures the amount of times a message should be retried immediately when it fails. After exceeding the number of retries, the failure will be throw back to the caller.
         /// </summary>
         public void InMemoryRetries(int numberOfRetries)
         {
@@ -66,15 +66,15 @@
         }
 
         /// <summary>
-        /// 
+        /// Moves a failed message to the error queue instead of throwing the exception of a failed message back to the caller. <c>false</c> by default.
         /// </summary>
-        public void SendFailedMessagesToErrorQueue()
+        public void SendFailedMessagesToErrorQueue(bool sendFailedMessagesToErrorQueue = true)
         {
-            recoverabilityPolicy.SendFailedMessagesToErrorQueue = true;
+            recoverabilityPolicy.SendFailedMessagesToErrorQueue = sendFailedMessagesToErrorQueue;
         }
 
         /// <summary>
-        /// 
+        /// Gives access to the underlying endpoint configuration for advanced configuration options.
         /// </summary>
         public void AdvancedConfiguration(Action<EndpointConfiguration> advancedConfiguration)
         {
