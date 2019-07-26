@@ -17,14 +17,15 @@
             ILogger log,
             ExecutionContext context)
         {
-            var azureServiceBusTriggerEndpoint = new AzureStorageQueueTriggerEndpoint("CustomEndpointNameForWhateverReason");
-            azureServiceBusTriggerEndpoint.UseSerialization<NewtonsoftSerializer>();
-
-            serverlessEndpoint = serverlessEndpoint ?? new ServerlessEndpoint(azureServiceBusTriggerEndpoint);
-
             await serverlessEndpoint.Process(myQueueItem);
         }
 
-        static ServerlessEndpoint serverlessEndpoint;
+        //simple caching when not requiring access to configuration files:
+        static readonly ServerlessEndpoint serverlessEndpoint = new ServerlessEndpoint(() =>
+        {
+            var azureServiceBusTriggerEndpoint = new AzureStorageQueueTriggerEndpoint("CustomEndpointNameForWhateverReason");
+            azureServiceBusTriggerEndpoint.UseSerialization<NewtonsoftSerializer>();
+            return azureServiceBusTriggerEndpoint;
+        });
     }
 }
