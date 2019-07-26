@@ -13,6 +13,9 @@
     <PackageReference Include="Microsoft.Extensions.Configuration" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\NServiceBus.Serverless.AzureServiceBusTrigger\NServiceBus.Serverless.AzureServiceBusTrigger.csproj" />
+    <ProjectReference Include="..\..\src\NServiceBus.Serverless.AzureStorageQueueTrigger\NServiceBus.Serverless.AzureStorageQueueTrigger.csproj" />
+    <ProjectReference Include="..\..\src\NServiceBus.Serverless.HttpTrigger\NServiceBus.Serverless.HttpTrigger.csproj" />
     <ProjectReference Include="..\..\src\NServiceBus.Serverless\NServiceBus.Serverless.csproj" />
   </ItemGroup>
   <ItemGroup>

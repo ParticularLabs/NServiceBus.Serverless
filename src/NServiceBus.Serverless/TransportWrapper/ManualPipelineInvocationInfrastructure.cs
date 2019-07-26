@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
-using NServiceBus.Transport;
-
-namespace NServiceBus.Serverless
+﻿namespace NServiceBus.Serverless
 {
+    using System.Threading.Tasks;
+    using Transport;
+
     class ManualPipelineInvocationInfrastructure : TransportReceiveInfrastructure
     {
         public ManualPipelineInvocationInfrastructure(PipelineInvoker pipelineInvoker) :
