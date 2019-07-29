@@ -1,6 +1,5 @@
 ﻿namespace NServiceBus.Serverless
 {
-    using System;
     using Recoverability;
     using Serialization;
     using Transport;
@@ -76,11 +75,7 @@
         /// <summary>
         /// Gives access to the underlying endpoint configuration for advanced configuration options.
         /// </summary>
-        public void AdvancedConfiguration(Action<EndpointConfiguration> advancedConfiguration)
-        {
-            //allow access to the underlying EndpointConfiguration for all sorts of configurations/workarounds
-            advancedConfiguration(EndpointConfiguration);
-        }
+        public EndpointConfiguration AdvancedConfiguration => EndpointConfiguration;
 
         readonly ServerlessRecoverabilityPolicy recoverabilityPolicy = new ServerlessRecoverabilityPolicy();
     }
