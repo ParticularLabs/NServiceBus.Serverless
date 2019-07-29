@@ -33,20 +33,23 @@
         /// </summary>
         public async Task Process(MessageContext message)
         {
-            await semaphoreLock.WaitAsync().ConfigureAwait(false);
-            try
+            if (pipeline == null)
             {
-                if (pipeline == null)
+                await semaphoreLock.WaitAsync().ConfigureAwait(false);
+                try
                 {
-                    var configuration = configurationFactory();
-                    pipeline = configuration.PipelineInvoker;
+                    if (pipeline == null)
+                    {
+                        var configuration = configurationFactory();
+                        pipeline = configuration.PipelineInvoker;
 
-                    await Endpoint.Start(configuration.EndpointConfiguration).ConfigureAwait(false);
+                        await Endpoint.Start(configuration.EndpointConfiguration).ConfigureAwait(false);
+                    }
                 }
-            }
-            finally
-            {
-                semaphoreLock.Release();
+                finally
+                {
+                    semaphoreLock.Release();
+                }
             }
 
             await pipeline.PushMessage(message).ConfigureAwait(false);
@@ -56,6 +59,6 @@
 
         readonly SemaphoreSlim semaphoreLock = new SemaphoreSlim(initialCount: 1, maxCount: 1);
 
-        PipelineInvoker pipeline;
+        volatile PipelineInvoker pipeline;
     }
 }
