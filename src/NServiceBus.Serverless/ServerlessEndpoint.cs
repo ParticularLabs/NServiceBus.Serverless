@@ -41,9 +41,9 @@
                     if (pipeline == null)
                     {
                         var configuration = configurationFactory();
-                        pipeline = configuration.PipelineInvoker;
-
                         await Endpoint.Start(configuration.EndpointConfiguration).ConfigureAwait(false);
+
+                        pipeline = configuration.PipelineInvoker;
                     }
                 }
                 finally
