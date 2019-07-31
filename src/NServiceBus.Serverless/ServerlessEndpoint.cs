@@ -59,6 +59,6 @@
 
         readonly SemaphoreSlim semaphoreLock = new SemaphoreSlim(initialCount: 1, maxCount: 1);
 
-        volatile PipelineInvoker pipeline;
+        PipelineInvoker pipeline;
     }
 }
