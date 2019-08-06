@@ -36,10 +36,10 @@
                 var azureServiceBusTriggerEndpoint = new AzureServiceBusTriggerEndpoint(context.FunctionName);
                 //TODO: package conflicts with json serializer with functions
                 azureServiceBusTriggerEndpoint.UseSerialization<NewtonsoftSerializer>();
-                var transport = azureServiceBusTriggerEndpoint.UseTransportForDispatch<AzureStorageQueueTransport>();
-                var connectionString = config.GetValue<string>("Values:ASQ");
+                var transport = azureServiceBusTriggerEndpoint.UseTransportForDispatch<AzureServiceBusTransport>();
+                var connectionString = config.GetValue<string>("Values:ASB");
                 transport.ConnectionString(connectionString);
-                transport.Routing().RouteToEndpoint(typeof(ASQMessage), "ASQTriggerQueue");
+                transport.Routing().RouteToEndpoint(typeof(ASBMessage), "ASBTriggerQueue");
 
                 return azureServiceBusTriggerEndpoint;
             });
