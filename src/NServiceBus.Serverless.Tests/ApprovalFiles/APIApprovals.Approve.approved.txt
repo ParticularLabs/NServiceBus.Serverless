@@ -12,6 +12,7 @@ namespace NServiceBus.Serverless
         public NServiceBus.EndpointConfiguration AdvancedConfiguration { get; }
         public void InMemoryRetries(int numberOfRetries) { }
         public void SendFailedMessagesToErrorQueue(bool sendFailedMessagesToErrorQueue = True) { }
+        public void SendFailedMessageToErrorQueue(string errorQueueName) { }
         public NServiceBus.Serialization.SerializationExtensions<T> UseSerialization<T>()
             where T : NServiceBus.Serialization.SerializationDefinition, new () { }
         public NServiceBus.TransportExtensions<TTransport> UseTransportForDispatch<TTransport>()
