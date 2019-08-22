@@ -1,0 +1,20 @@
+namespace NServiceBus.Serverless
+{
+    public class ServerlessEndpoint
+    {
+        public ServerlessEndpoint(System.Func<NServiceBus.Serverless.ServerlessEndpointConfiguration> configurationFactory) { }
+        public ServerlessEndpoint(NServiceBus.Serverless.ServerlessEndpointConfiguration configuration) { }
+        public System.Threading.Tasks.Task Process(NServiceBus.Transport.MessageContext message) { }
+    }
+    public class ServerlessEndpointConfiguration
+    {
+        public ServerlessEndpointConfiguration(string endpointName) { }
+        public NServiceBus.EndpointConfiguration AdvancedConfiguration { get; }
+        public void InMemoryRetries(int numberOfRetries) { }
+        public void SendFailedMessagesToErrorQueue(bool sendFailedMessagesToErrorQueue = True) { }
+        public NServiceBus.Serialization.SerializationExtensions<T> UseSerialization<T>()
+            where T : NServiceBus.Serialization.SerializationDefinition, new () { }
+        public NServiceBus.TransportExtensions<TTransport> UseTransportForDispatch<TTransport>()
+            where TTransport : NServiceBus.Transport.TransportDefinition, new () { }
+    }
+}
