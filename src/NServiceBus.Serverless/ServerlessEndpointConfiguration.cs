@@ -64,6 +64,16 @@
         }
 
         /// <summary>
+        /// Moves a failed message to a configured error queue instead of throwing the exception of a failed message back to the caller.
+        /// The default error queue name is `error`.
+        /// </summary>
+        public void SendFailedMessageToErrorQueue(string errorQueueName)
+        {
+            EndpointConfiguration.SendFailedMessagesTo(errorQueueName);
+            SendFailedMessagesToErrorQueue(true);
+        }
+
+        /// <summary>
         /// Moves a failed message to the error queue instead of throwing the exception of a failed message back to the caller.
         /// <c>false</c> by default.
         /// </summary>
