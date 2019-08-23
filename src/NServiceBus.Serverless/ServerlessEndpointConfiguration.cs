@@ -19,8 +19,7 @@
             EndpointConfiguration.UsePersistence<InMemoryPersistence>();
 
             //TODO: currently ServerLess transport has transaction mode NONE which disables immediate and delayed retries anyway
-            //make sure a call to "onError" will move the message to the error queue. In-memory retries are handled by the transport internally.
-            EndpointConfiguration.Recoverability().Immediate(c => c.NumberOfRetries(0));
+            //make sure a call to "onError" will move the message to the error queue.
             EndpointConfiguration.Recoverability().Delayed(c => c.NumberOfRetries(0));
             //bubble exception to the function by default
             recoverabilityPolicy.SendFailedMessagesToErrorQueue = false;
@@ -53,35 +52,17 @@
         {
             return EndpointConfiguration.UseSerialization<T>();
         }
-
-        /// <summary>
-        /// Configures the amount of times a message should be retried immediately when it fails. After exceeding the number of
-        /// retries, the failure will be throw back to the caller.
-        /// </summary>
-        public void InMemoryRetries(int numberOfRetries)
-        {
-            EndpointConfiguration.Recoverability().Immediate(c => c.NumberOfRetries(numberOfRetries));
-        }
-
+        
         /// <summary>
         /// Moves a failed message to a configured error queue instead of throwing the exception of a failed message back to the caller.
         /// The default error queue name is `error`.
         /// </summary>
-        public void SendFailedMessageToErrorQueue(string errorQueueName)
+        public void SendFailedMessageToErrorQueue(string errorQueueName = "error")
         {
+            recoverabilityPolicy.SendFailedMessagesToErrorQueue = true;
             EndpointConfiguration.SendFailedMessagesTo(errorQueueName);
-            SendFailedMessagesToErrorQueue(true);
         }
-
-        /// <summary>
-        /// Moves a failed message to the error queue instead of throwing the exception of a failed message back to the caller.
-        /// <c>false</c> by default.
-        /// </summary>
-        public void SendFailedMessagesToErrorQueue(bool sendFailedMessagesToErrorQueue = true)
-        {
-            recoverabilityPolicy.SendFailedMessagesToErrorQueue = sendFailedMessagesToErrorQueue;
-        }
-
+        
         /// <summary>
         /// Gives access to the underlying endpoint configuration for advanced configuration options.
         /// </summary>

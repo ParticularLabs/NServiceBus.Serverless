@@ -25,9 +25,24 @@
         /// </summary>
         public async Task Process(MessageContext message, TExecutionContext executionContext)
         {
+            await InitializeEndpointIfNecessary(executionContext, message.ReceiveCancellationTokenSource.Token).ConfigureAwait(false);
+            await pipeline.PushMessage(message).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Lets the NServiceBus pipeline process this failed message.
+        /// </summary>
+        public async Task ProcessFailedMessage(ErrorContext errorContext, TExecutionContext executionContext)
+        {
+            await InitializeEndpointIfNecessary(executionContext).ConfigureAwait(false);
+            await pipeline.PushFailedMessage(errorContext).ConfigureAwait(false);
+        }
+
+        async Task InitializeEndpointIfNecessary(TExecutionContext executionContext, CancellationToken token = default(CancellationToken))
+        {
             if (pipeline == null)
             {
-                await semaphoreLock.WaitAsync(message.ReceiveCancellationTokenSource.Token).ConfigureAwait(false);
+                await semaphoreLock.WaitAsync(token).ConfigureAwait(false);
                 try
                 {
                     if (pipeline == null)
@@ -43,8 +58,6 @@
                     semaphoreLock.Release();
                 }
             }
-
-            await pipeline.PushMessage(message).ConfigureAwait(false);
         }
 
         readonly Func<TExecutionContext, ServerlessEndpointConfiguration> configurationFactory;
