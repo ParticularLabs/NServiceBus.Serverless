@@ -1,8 +1,8 @@
-namespace NServiceBus.Serverless
+namespace NServiceBus
 {
     public class ServerlessEndpoint<TExecutionContext>
     {
-        public ServerlessEndpoint(System.Func<TExecutionContext, NServiceBus.Serverless.ServerlessEndpointConfiguration> configurationFactory) { }
+        public ServerlessEndpoint(System.Func<TExecutionContext, NServiceBus.ServerlessEndpointConfiguration> configurationFactory) { }
         public System.Threading.Tasks.Task Process(NServiceBus.Transport.MessageContext message, TExecutionContext executionContext) { }
     }
     public class ServerlessEndpointConfiguration

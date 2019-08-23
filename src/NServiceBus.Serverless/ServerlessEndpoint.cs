@@ -1,8 +1,9 @@
-﻿namespace NServiceBus.Serverless
+﻿namespace NServiceBus
 {
     using System;
     using System.Threading;
     using System.Threading.Tasks;
+    using Serverless;
     using Transport;
 
     /// <summary>

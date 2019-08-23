@@ -1,7 +1,8 @@
-﻿namespace NServiceBus.Serverless
+﻿namespace NServiceBus
 {
-    using Recoverability;
     using Serialization;
+    using Serverless;
+    using Serverless.Recoverability;
     using Transport;
 
     /// <summary>
