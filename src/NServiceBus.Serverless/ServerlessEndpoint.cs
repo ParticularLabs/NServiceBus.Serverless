@@ -27,7 +27,7 @@
         {
             if (pipeline == null)
             {
-                await semaphoreLock.WaitAsync().ConfigureAwait(false);
+                await semaphoreLock.WaitAsync(message.ReceiveCancellationTokenSource.Token).ConfigureAwait(false);
                 try
                 {
                     if (pipeline == null)
