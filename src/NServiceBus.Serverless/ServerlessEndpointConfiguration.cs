@@ -7,12 +7,12 @@
     /// <summary>
     /// The configuration for an NServiceBus endpoint optimized for serverless environments.
     /// </summary>
-    public class ServerlessEndpointConfiguration
+    public abstract class ServerlessEndpointConfiguration
     {
         /// <summary>
         /// Creates a new configuration.
         /// </summary>
-        public ServerlessEndpointConfiguration(string endpointName)
+        protected ServerlessEndpointConfiguration(string endpointName)
         {
             EndpointConfiguration = new EndpointConfiguration(endpointName);
 
