@@ -39,7 +39,14 @@
                 try
                 {
                     processingAttempts++;
-                    await onMessage.Invoke(messageContext).ConfigureAwait(false);
+                    await onMessage.Invoke(new MessageContext(
+                            messageContext.MessageId,
+                            new Dictionary<string, string>(messageContext.Headers),
+                            messageContext.Body,
+                            messageContext.TransportTransaction,
+                            messageContext.ReceiveCancellationTokenSource,
+                            messageContext.Extensions))
+                        .ConfigureAwait(false);
                     return;
                 }
                 catch (Exception exception)
