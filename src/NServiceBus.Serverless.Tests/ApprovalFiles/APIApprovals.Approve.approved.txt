@@ -1,13 +1,13 @@
 namespace NServiceBus.Serverless
 {
-    public class ServerlessEndpoint<TExecutionContext>
+    public abstract class ServerlessEndpoint<TExecutionContext>
     {
-        public ServerlessEndpoint(System.Func<TExecutionContext, NServiceBus.Serverless.ServerlessEndpointConfiguration> configurationFactory) { }
+        protected ServerlessEndpoint(System.Func<TExecutionContext, NServiceBus.Serverless.ServerlessEndpointConfiguration> configurationFactory) { }
         public System.Threading.Tasks.Task Process(NServiceBus.Transport.MessageContext message, TExecutionContext executionContext) { }
     }
-    public class ServerlessEndpointConfiguration
+    public abstract class ServerlessEndpointConfiguration
     {
-        public ServerlessEndpointConfiguration(string endpointName) { }
+        protected ServerlessEndpointConfiguration(string endpointName) { }
         public NServiceBus.EndpointConfiguration AdvancedConfiguration { get; }
         public void InMemoryRetries(int numberOfRetries) { }
         public void SendFailedMessagesToErrorQueue(bool sendFailedMessagesToErrorQueue = True) { }

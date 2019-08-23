@@ -10,12 +10,12 @@
     /// by the caller.
     /// Instances of <see cref="ServerlessEndpoint{TExecutionContext}" /> can be cached and are thread-safe.
     /// </summary>
-    public class ServerlessEndpoint<TExecutionContext>
+    public abstract class ServerlessEndpoint<TExecutionContext>
     {
         /// <summary>
         /// Create a new session based on the configuration factory provided.
         /// </summary>
-        public ServerlessEndpoint(Func<TExecutionContext, ServerlessEndpointConfiguration> configurationFactory)
+        protected ServerlessEndpoint(Func<TExecutionContext, ServerlessEndpointConfiguration> configurationFactory)
         {
             this.configurationFactory = configurationFactory;
         }
