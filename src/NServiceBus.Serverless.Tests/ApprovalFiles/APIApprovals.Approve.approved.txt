@@ -10,10 +10,10 @@ namespace NServiceBus.Serverless
     {
         protected ServerlessEndpointConfiguration(string endpointName) { }
         public NServiceBus.EndpointConfiguration AdvancedConfiguration { get; }
-        public void SendFailedMessageToErrorQueue(string errorQueueName = "error") { }
+        public void DoNotSendMessagesToErrorQueue() { }
         public NServiceBus.Serialization.SerializationExtensions<T> UseSerialization<T>()
             where T : NServiceBus.Serialization.SerializationDefinition, new () { }
-        public NServiceBus.TransportExtensions<TTransport> UseTransportForDispatch<TTransport>()
+        protected NServiceBus.TransportExtensions<TTransport> UseTransport<TTransport>()
             where TTransport : NServiceBus.Transport.TransportDefinition, new () { }
     }
 }

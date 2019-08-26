@@ -23,6 +23,11 @@
                 return RecoverabilityAction.ImmediateRetry();
             }
 
+            if (errorContext.DelayedDeliveriesPerformed <= config.Delayed.MaxNumberOfRetries)
+            {
+                return RecoverabilityAction.DelayedRetry(config.Delayed.TimeIncrease);
+            }
+
             return HandleFailedMessage();
 
             RecoverabilityAction HandleFailedMessage()
