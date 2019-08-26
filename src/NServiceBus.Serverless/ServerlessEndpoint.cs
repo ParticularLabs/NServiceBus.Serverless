@@ -1,7 +1,6 @@
 ﻿namespace NServiceBus.Serverless
 {
     using System;
-    using System.Runtime.ExceptionServices;
     using System.Threading;
     using System.Threading.Tasks;
     using Transport;
@@ -39,10 +38,11 @@
         /// <summary>
         /// Lets the NServiceBus pipeline process this failed message.
         /// </summary>
-        public async Task ProcessFailedMessage(MessageContext messageContext, ExceptionDispatchInfo exceptionInfo, int immediateProcessingAttempts, TExecutionContext executionContext)
+        public async Task<ErrorHandleResult> ProcessFailedMessage(MessageContext messageContext, Exception exception, int immediateProcessingAttempts, TExecutionContext executionContext)
         {
             await InitializeEndpointIfNecessary(executionContext).ConfigureAwait(false);
-            await pipeline.PushFailedMessage(messageContext, exceptionInfo, immediateProcessingAttempts).ConfigureAwait(false);
+
+            return await pipeline.PushFailedMessage(messageContext, exception, immediateProcessingAttempts).ConfigureAwait(false);
         }
 
         async Task InitializeEndpointIfNecessary(TExecutionContext executionContext, CancellationToken token = default)
