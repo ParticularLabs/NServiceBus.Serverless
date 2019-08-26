@@ -23,6 +23,11 @@
         }
 
         /// <summary>
+        /// Lazy initialized configuration
+        /// </summary>
+        protected TConfiguration Configuration { get; private set; }
+
+        /// <summary>
         /// Lets the NServiceBus pipeline process this message.
         /// </summary>
         public async Task Process(MessageContext message, TExecutionContext executionContext)
@@ -40,16 +45,6 @@
             await pipeline.PushFailedMessage(messageContext, exceptionInfo, immediateProcessingAttempts).ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// Allows the endpoint to initialize configuration specific settings if required
-        /// </summary>
-        /// <param name="executionContext">The execution context.</param>
-        /// <param name="configuration">The serverless configuration</param>
-        protected virtual Task Initialize(TExecutionContext executionContext, TConfiguration configuration)
-        {
-            return Task.CompletedTask;
-        }
-
         async Task InitializeEndpointIfNecessary(TExecutionContext executionContext, CancellationToken token = default)
         {
             if (pipeline == null)
@@ -59,11 +54,10 @@
                 {
                     if (pipeline == null)
                     {
-                        var configuration = configurationFactory(executionContext);
-                        await Initialize(executionContext, configuration).ConfigureAwait(false);
-                        await Endpoint.Start(configuration.EndpointConfiguration).ConfigureAwait(false);
+                        Configuration = configurationFactory(executionContext);
+                        await Endpoint.Start(Configuration.EndpointConfiguration).ConfigureAwait(false);
 
-                        pipeline = configuration.PipelineInvoker;
+                        pipeline = Configuration.PipelineInvoker;
                     }
                 }
                 finally
