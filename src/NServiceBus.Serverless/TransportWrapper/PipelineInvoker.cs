@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Runtime.ExceptionServices;
     using System.Threading.Tasks;
     using Transport;
 
@@ -30,15 +31,15 @@
             return Task.CompletedTask;
         }
 
-        public async Task PushFailedMessage(ErrorContext errorContext)
+        public async Task PushFailedMessage(MessageContext messageContext, ExceptionDispatchInfo exceptionInfo, int immediateProcessingAttempts)
         {
             var context = new ErrorContext(
-                errorContext.Exception,
-                new Dictionary<string, string>(errorContext.Message.Headers),
-                errorContext.Message.MessageId,
-                errorContext.Message.Body,
+                exceptionInfo.SourceException,
+                new Dictionary<string, string>(messageContext.Headers),
+                messageContext.MessageId,
+                messageContext.Body,
                 new TransportTransaction(),
-                errorContext.ImmediateProcessingFailures);
+                immediateProcessingAttempts);
 
             var errorHandling = await onError(context).ConfigureAwait(false);
             if (errorHandling != ErrorHandleResult.Handled)
@@ -46,7 +47,7 @@
                 //handled means the message has been sent to the error queue
                 //otherwise it returns ErrorhandleResult.RetryRequired for immediate retries
                 //or throws an exception when not sending to the error queue
-                throw new Exception("Retry required");
+                exceptionInfo.Throw();
             }
         }
 

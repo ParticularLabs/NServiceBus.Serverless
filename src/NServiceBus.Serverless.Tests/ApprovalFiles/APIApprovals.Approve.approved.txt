@@ -4,7 +4,7 @@ namespace NServiceBus.Serverless
     {
         protected ServerlessEndpoint(System.Func<TExecutionContext, NServiceBus.Serverless.ServerlessEndpointConfiguration> configurationFactory) { }
         public System.Threading.Tasks.Task Process(NServiceBus.Transport.MessageContext message, TExecutionContext executionContext) { }
-        public System.Threading.Tasks.Task ProcessFailedMessage(NServiceBus.Transport.ErrorContext errorContext, TExecutionContext executionContext) { }
+        public System.Threading.Tasks.Task ProcessFailedMessage(NServiceBus.Transport.MessageContext messageContext, System.Runtime.ExceptionServices.ExceptionDispatchInfo exceptionInfo, int immediateProcessingAttempts, TExecutionContext executionContext) { }
     }
     public abstract class ServerlessEndpointConfiguration
     {
