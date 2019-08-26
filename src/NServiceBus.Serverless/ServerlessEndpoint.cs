@@ -43,8 +43,9 @@
         /// <summary>
         /// Allows the endpoint to initialize configuration specific settings if required
         /// </summary>
+        /// <param name="executionContext">The execution context.</param>
         /// <param name="configuration">The serverless configuration</param>
-        protected virtual Task Initialize(TConfiguration configuration)
+        protected virtual Task Initialize(TExecutionContext executionContext, TConfiguration configuration)
         {
             return Task.CompletedTask;
         }
@@ -59,7 +60,7 @@
                     if (pipeline == null)
                     {
                         var configuration = configurationFactory(executionContext);
-                        await Initialize(configuration).ConfigureAwait(false);
+                        await Initialize(executionContext, configuration).ConfigureAwait(false);
                         await Endpoint.Start(configuration.EndpointConfiguration).ConfigureAwait(false);
 
                         pipeline = configuration.PipelineInvoker;
