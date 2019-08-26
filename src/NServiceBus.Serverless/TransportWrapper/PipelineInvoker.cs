@@ -30,17 +30,9 @@
             return Task.CompletedTask;
         }
 
-        public async Task<ErrorHandleResult> PushFailedMessage(MessageContext messageContext, Exception exception, int immediateProcessingAttempts)
+        public async Task<ErrorHandleResult> PushFailedMessage(ErrorContext errorContext)
         {
-            var context = new ErrorContext(
-                exception,
-                new Dictionary<string, string>(messageContext.Headers),
-                messageContext.MessageId,
-                messageContext.Body,
-                new TransportTransaction(),
-                immediateProcessingAttempts);
-
-            return await onError(context).ConfigureAwait(false);
+            return await onError(errorContext).ConfigureAwait(false);
         }
 
         public async Task PushMessage(MessageContext messageContext)

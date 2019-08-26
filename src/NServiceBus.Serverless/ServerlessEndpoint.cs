@@ -1,6 +1,7 @@
 ﻿namespace NServiceBus.Serverless
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
     using Transport;
@@ -32,6 +33,7 @@
         public async Task Process(MessageContext message, TExecutionContext executionContext)
         {
             await InitializeEndpointIfNecessary(executionContext, message.ReceiveCancellationTokenSource.Token).ConfigureAwait(false);
+
             await pipeline.PushMessage(message).ConfigureAwait(false);
         }
 
@@ -42,7 +44,15 @@
         {
             await InitializeEndpointIfNecessary(executionContext).ConfigureAwait(false);
 
-            return await pipeline.PushFailedMessage(messageContext, exception, immediateProcessingAttempts).ConfigureAwait(false);
+            var errorContext = new ErrorContext(
+                exception,
+                new Dictionary<string, string>(messageContext.Headers),
+                messageContext.MessageId,
+                messageContext.Body,
+                new TransportTransaction(),
+                immediateProcessingAttempts);
+
+            return await pipeline.PushFailedMessage(errorContext).ConfigureAwait(false);
         }
 
         async Task InitializeEndpointIfNecessary(TExecutionContext executionContext, CancellationToken token = default)
