@@ -1,7 +1,6 @@
 ﻿namespace NServiceBus.Serverless
 {
     using System;
-    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Transport;
 
@@ -30,21 +29,14 @@
             return Task.CompletedTask;
         }
 
-        public async Task<ErrorHandleResult> PushFailedMessage(ErrorContext errorContext)
+        public Task<ErrorHandleResult> PushFailedMessage(ErrorContext errorContext)
         {
-            return await onError(errorContext).ConfigureAwait(false);
+            return onError(errorContext);
         }
 
-        public async Task PushMessage(MessageContext messageContext)
+        public Task PushMessage(MessageContext messageContext)
         {
-            await onMessage.Invoke(new MessageContext(
-                    messageContext.MessageId,
-                    new Dictionary<string, string>(messageContext.Headers),
-                    messageContext.Body,
-                    messageContext.TransportTransaction,
-                    messageContext.ReceiveCancellationTokenSource,
-                    messageContext.Extensions))
-                .ConfigureAwait(false);
+            return onMessage.Invoke(messageContext);
         }
 
         Func<MessageContext, Task> onMessage;
