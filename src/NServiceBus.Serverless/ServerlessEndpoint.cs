@@ -22,11 +22,6 @@
         }
 
         /// <summary>
-        /// Lazy initialized configuration
-        /// </summary>
-        protected TConfiguration Configuration { get; private set; }
-
-        /// <summary>
         /// Lets the NServiceBus pipeline process this message.
         /// </summary>
         public async Task Process(MessageContext messageContext, TExecutionContext executionContext)
@@ -46,7 +41,23 @@
             return await pipeline.PushFailedMessage(errorContext).ConfigureAwait(false);
         }
 
-        async Task InitializeEndpointIfNecessary(TExecutionContext executionContext, CancellationToken token = default)
+        /// <summary>
+        /// Thread-safe initialization method that allows to get access to the strongly typed configuration.
+        /// </summary>
+        /// <remarks>Will only be called once either when <see cref="Process"/>, <see cref="ProcessFailedMessage"/> or <see cref="InitializeEndpointIfNecessary"/> is called.</remarks>
+        /// <param name="configuration">The fully initialized configuration.</param>
+        protected virtual Task Initialize(TConfiguration configuration)
+        {
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// Allows to forcefully initialize the endpoint if it hasn't been initialized yet.
+        /// </summary>
+        /// <param name="executionContext">The execution context.</param>
+        /// <param name="token">The cancellation token or default cancellation token.</param>
+        // ReSharper disable once MemberCanBePrivate.Global
+        protected async Task InitializeEndpointIfNecessary(TExecutionContext executionContext, CancellationToken token = default)
         {
             if (pipeline == null)
             {
@@ -55,10 +66,11 @@
                 {
                     if (pipeline == null)
                     {
-                        Configuration = configurationFactory(executionContext);
-                        await Endpoint.Start(Configuration.EndpointConfiguration).ConfigureAwait(false);
+                        var configuration = configurationFactory(executionContext);
+                        await Initialize(configuration).ConfigureAwait(false);
+                        await Endpoint.Start(configuration.EndpointConfiguration).ConfigureAwait(false);
 
-                        pipeline = Configuration.PipelineInvoker;
+                        pipeline = configuration.PipelineInvoker;
                     }
                 }
                 finally
