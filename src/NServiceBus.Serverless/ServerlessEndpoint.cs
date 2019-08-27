@@ -1,7 +1,6 @@
 ﻿namespace NServiceBus.Serverless
 {
     using System;
-    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
     using Transport;
@@ -30,27 +29,19 @@
         /// <summary>
         /// Lets the NServiceBus pipeline process this message.
         /// </summary>
-        public async Task Process(MessageContext message, TExecutionContext executionContext)
+        public async Task Process(MessageContext messageContext, TExecutionContext executionContext)
         {
-            await InitializeEndpointIfNecessary(executionContext, message.ReceiveCancellationTokenSource.Token).ConfigureAwait(false);
+            await InitializeEndpointIfNecessary(executionContext, messageContext.ReceiveCancellationTokenSource.Token).ConfigureAwait(false);
 
-            await pipeline.PushMessage(message).ConfigureAwait(false);
+            await pipeline.PushMessage(messageContext).ConfigureAwait(false);
         }
 
         /// <summary>
         /// Lets the NServiceBus pipeline process this failed message.
         /// </summary>
-        public async Task<ErrorHandleResult> ProcessFailedMessage(MessageContext messageContext, Exception exception, int immediateProcessingAttempts, TExecutionContext executionContext)
+        public async Task<ErrorHandleResult> ProcessFailedMessage(ErrorContext errorContext, TExecutionContext executionContext)
         {
             await InitializeEndpointIfNecessary(executionContext).ConfigureAwait(false);
-
-            var errorContext = new ErrorContext(
-                exception,
-                new Dictionary<string, string>(messageContext.Headers),
-                messageContext.MessageId,
-                messageContext.Body,
-                new TransportTransaction(),
-                immediateProcessingAttempts);
 
             return await pipeline.PushFailedMessage(errorContext).ConfigureAwait(false);
         }
