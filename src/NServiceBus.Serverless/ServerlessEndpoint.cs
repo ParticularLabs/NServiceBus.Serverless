@@ -24,7 +24,7 @@
         /// <summary>
         /// Lets the NServiceBus pipeline process this message.
         /// </summary>
-        public async Task Process(MessageContext messageContext, TExecutionContext executionContext)
+        protected async Task Process(MessageContext messageContext, TExecutionContext executionContext)
         {
             await InitializeEndpointIfNecessary(executionContext, messageContext.ReceiveCancellationTokenSource.Token).ConfigureAwait(false);
 
@@ -34,7 +34,7 @@
         /// <summary>
         /// Lets the NServiceBus pipeline process this failed message.
         /// </summary>
-        public async Task<ErrorHandleResult> ProcessFailedMessage(ErrorContext errorContext, TExecutionContext executionContext)
+        protected async Task<ErrorHandleResult> ProcessFailedMessage(ErrorContext errorContext, TExecutionContext executionContext)
         {
             await InitializeEndpointIfNecessary(executionContext).ConfigureAwait(false);
 
