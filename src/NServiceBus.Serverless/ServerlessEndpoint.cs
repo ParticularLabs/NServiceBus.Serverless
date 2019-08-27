@@ -42,7 +42,7 @@
         }
 
         /// <summary>
-        /// Concurrency safe initialization method that allows to get access to the strongly typed configuration.
+        /// Thread-safe initialization method that allows to get access to the strongly typed configuration.
         /// </summary>
         /// <remarks>Will only be called once either when <see cref="Process"/>, <see cref="ProcessFailedMessage"/> or <see cref="InitializeEndpointIfNecessary"/> is called.</remarks>
         /// <param name="configuration">The fully initialized configuration.</param>
@@ -56,6 +56,7 @@
         /// </summary>
         /// <param name="executionContext">The execution context.</param>
         /// <param name="token">The cancellation token or default cancellation token.</param>
+        // ReSharper disable once MemberCanBePrivate.Global
         protected async Task InitializeEndpointIfNecessary(TExecutionContext executionContext, CancellationToken token = default)
         {
             if (pipeline == null)
