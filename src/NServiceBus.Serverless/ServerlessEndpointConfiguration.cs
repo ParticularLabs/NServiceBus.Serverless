@@ -18,7 +18,6 @@
 
             EndpointConfiguration.UsePersistence<InMemoryPersistence>();
 
-            //TODO: currently ServerLess transport has transaction mode NONE which disables immediate and delayed retries anyway
             //make sure a call to "onError" will move the message to the error queue.
             EndpointConfiguration.Recoverability().Delayed(c => c.NumberOfRetries(0));
             // send failed messages to the error queue
